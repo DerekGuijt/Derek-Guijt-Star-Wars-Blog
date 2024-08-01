@@ -7,7 +7,6 @@ function StarshipCard() {
   const { store, actions } = useContext(Context);
   const [starships, setStarships] = useState([]);
 
-  // Fetch starships on component mount
   useEffect(() => {
     actions.fetchStarships();
   }, []);
@@ -16,13 +15,12 @@ function StarshipCard() {
     setStarships(store.starships);
   }, [store.starships]);
 
-  // Handling the favorites toggle
   const handleFavorites = (starship) => {
     const isFavorite = store.favorites.some((fav) => fav.uid === starship.uid);
     if (isFavorite) {
-      actions.removeFavorites(starship.name); // Make sure this correctly identifies the starship to remove
+      actions.removeFavorites(starship.name);
     } else {
-      actions.addFavorites(starship.model, starship.id, "starships");
+      actions.addFavorites(starship.name, starship.uid, "starship");
     }
   };
 
@@ -33,7 +31,7 @@ function StarshipCard() {
     >
       {starships.map((starship, index) => {
         const isFavorite = store.favorites.some(
-          (fav) => fav.uid === starship.uid && fav.type === "starships"
+          (fav) => fav.uid === starship.uid && fav.type === "starship"
         );
         return (
           <div

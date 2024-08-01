@@ -7,7 +7,7 @@ function PlanetCard() {
   const { store, actions } = useContext(Context);
   const [planets, setPlanets] = useState([]);
 
-  // Fetch planets on component mount
+
   useEffect(() => {
     actions.fetchPlanets();
   }, []);
@@ -16,24 +16,22 @@ function PlanetCard() {
     setPlanets(store.planets);
   }, [store.planets]);
 
-  // Handling the favorites toggle
   const handleFavorites = (planet) => {
     const isFavorite = store.favorites.some((fav) => fav.uid === planet.uid);
     if (isFavorite) {
-      actions.removeFavorites(planet.name); // Make sure this correctly identifies the planet to remove
+      actions.removeFavorites(planet.name);
     } else {
-      actions.addFavorites(planet.name, planet.uid, "planets");
+      actions.addFavorites(planet.name, planet.uid, "planet");
     }
   };
-
   return (
     <div
       className="d-flex col-10 overflow-auto mt-5 mx-auto cards"
       style={{ height: "50rem" }}
     >
-      {planets.map((planet, index) => {
+      {planets?.map((planet, index) => {
         const isFavorite = store.favorites.some(
-          (fav) => fav.uid === planet.uid && fav.type === "planets"
+          (fav) => fav.uid === planet.uid && fav.type === "planet"
         );
         return (
           <div
@@ -53,7 +51,6 @@ function PlanetCard() {
               className={isFavorite ? "fas fa-heart" : "far fa-heart"}
               onClick={() => handleFavorites(planet)}
             >
-              {" "}
             </button>
           </div>
         );

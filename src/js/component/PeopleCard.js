@@ -7,7 +7,6 @@ function PeopleCard() {
   const { store, actions } = useContext(Context);
   const [people, setPeople] = useState([]);
 
-  // Fetch people on component mount
   useEffect(() => {
     actions.fetchPeople();
   }, []);
@@ -16,13 +15,12 @@ function PeopleCard() {
     setPeople(store.people);
   }, [store.people]);
 
-  // Handling the favorites toggle
   const handleFavorites = (person) => {
-    const isFavorite = store.favorites.some((fav) => fav.id === person.id);
+    const isFavorite = store.favorites.some((fav) => fav.uid === person.uid);
     if (isFavorite) {
-      actions.removeFavorites(person.name); // Make sure this correctly identifies the person to remove
+      actions.removeFavorites(person.name);
     } else {
-      actions.addFavorites(person.name, person.id, "character");
+      actions.addFavorites(person.name, person.uid, "character");
     }
   };
 
@@ -32,7 +30,6 @@ function PeopleCard() {
       style={{ height: "50rem" }}
     >
       {people.map((person, index) => {
-        console.log(person)
         const isFavorite = store.favorites.some(
           (fav) => fav.uid === person.uid && fav.type === "character"
         );
@@ -40,7 +37,7 @@ function PeopleCard() {
           <div
             key={index}
             className="card col-1 mx-1"
-            style={{ width: "30rem", height: "48rem" }}
+            style={{ width: "38rem", height: "48rem" }}
           >
             <h3>{person.name}</h3>
             <img
@@ -49,7 +46,7 @@ function PeopleCard() {
               alt={person.name}
               style={{ height: "30rem", width: "30rem" }}
             />
-            <Link to={`/CharacterDetail/` + person.uid}>Learn More</Link>
+            <Link to={'/CharacterDetail/' + person.uid}>Learn More</Link>
             <button
               className={isFavorite ? "fas fa-heart" : "far fa-heart"}
               onClick={() => handleFavorites(person)}
@@ -60,7 +57,7 @@ function PeopleCard() {
         );
       })}
     </div>
-  );
-}
+  )
+};
 
 export default PeopleCard;
